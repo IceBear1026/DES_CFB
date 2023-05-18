@@ -58,21 +58,26 @@ def decrypt(json_input):
     result = "Plaintext was: " + str(plaintext)
     return result
 
-def main():
-    while True:
-        text = ""
-        answer = check_encOrdec()
-        
-        if (answer == "no"):
-            break
-        elif (answer == "secret"):
-            text = the_key
-        elif (answer == "encrypt"):
-            message = bytes(str(input("Tell me a text to encrypt: ")), 'utf-8')
-            text = encrypt(message,the_key,the_IV)
-        else:
-            message = input("Write the IV and Ciphertext in JSON format respectively to decrypt: ")
-            text = decrypt(message)
-        print(text)
+while True:
+    text = ""
+    answer = check_encOrdec()
+    
+    if (answer == "no"):
+        break
+    elif (answer == "secret"):
+        text = the_key
+    elif (answer == "encrypt"):
+        message = bytes(str(input("Tell me a text to encrypt: ")), 'utf-8')
 
-main()
+        while True:
+            b = str(input("Type your Initalization Vector if you would like to provide your own. If not, type n. "))
+            if b == "n":
+                break
+            the_IV = b64decode(b)
+            break
+                
+        text = encrypt(message,the_key,the_IV)
+    else:
+        message = input("Write the IV and Ciphertext in JSON format respectively to decrypt: ")
+        text = decrypt(message)
+    print(text)
